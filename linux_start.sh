@@ -1,6 +1,7 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WEB_GAME_PATH="$SCRIPT_DIR/web_game_displayer"
 REFLECTOR_PATH="$SCRIPT_DIR/reflector-linux-x64"
+GAMEMASTER_PATH="$SCRIPT_DIR/gamemaster"
 
 cd "$WEB_GAME_PATH" || exit
 echo "Lancement de nodemon..."
@@ -23,5 +24,24 @@ echo "Lancement de Reflector avec l'adresse IP : $IP..."
 ./reflector --host "$IP" | tee reflector.log &
 REFLECTOR_PID=$!
 
+sleep 3
 
-wait $NPM_PID $REFLECTOR_PID
+PORT=$(grep -oE 'ws://[^:]+:[0-9]+' reflector.log | grep -oE '[0-9]+$')
+
+if [[ -z "$PORT" ]]; then
+    echo "Impossible de récupérer le port du Reflector."
+    exit 1
+fi
+
+echo "Port récupéré : $PORT"
+
+echo "Attente de 60 secondes avant de lancer GameMaster..."
+sleep 60
+
+cd "$GAMEMASTER_PATH" || exit
+echo "Lancement de GameMaster avec l'adresse IP : $IP et le port : $PORT..."
+runghc GameMaster.hs "$IP" "$PORT" &
+GAMEMASTER_PID=$!
+
+
+wait $NPM_PID $REFLECTOR_PID $GAMEMASTER_PID
