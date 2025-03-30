@@ -24,13 +24,15 @@ chmod +x linux_start.sh
 5. Récupération du port WebSocket du Reflector
     - Après quelques secondes, le script extrait le port WebSocket utilisé par `reflector` depuis ses logs
     - SI le port ne peut pas être récupéré, le script s'arrête
-6. Lancement de l'arbitre - Railroad
+6. Lancement du client save
+    - Lancement d'un client permettant de sauvegarder la partie 
+7. Lancement de l'arbitre - Railroad
     - `referee.js` est exécuté vie Node.js avec l'option `--watch` pour recharger le programme en cas de modification.
     - Ler logs sont enregistrés dans `railroad.log`
-7. Lancement du spéctateur - spectate
+8. Lancement du spéctateur - spectate
     - nodemon lance le spectateur
     - Le spectateur ne peut pas jouer mais affiche les plateau de tous le joueur, et les met a jour en direct.
-8. Pause de 60 secondes
+9. Pause de 60 secondes
     - Cette pause est nécessaire pour plusieurs raison, on s'assure que tous les services précédents sont bien démarrés, et on permet au joueur une minutes pour se connecté au client web.
-9. Lancement de GameMaster
+10. Lancement de GameMaster
     - `GameMaster.hs` est exécuté avec l'ip et le port récupérés précédemment
