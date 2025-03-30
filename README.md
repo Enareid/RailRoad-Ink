@@ -2,7 +2,7 @@
 
 ## Play 
 
-This bash script start a set of programs necessary to execute the game online.
+This bash script starts a set of programs necessary to execute the game online.
 It makes sure that dependencies are installed before starting each element in a precise order. 
 
 To start the script, execute these commands at the root of the directory : 
