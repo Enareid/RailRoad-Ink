@@ -1,64 +1,76 @@
-# scripts
+# Scripts
 
-## Jouer au jeu
+## Play 
 
-Ce scripts bash a pour objectif de lancer une série de programmes nécessaires à l'exécution du jeu en ligne.
-Il s'assure que les dépendances node sont installées et suit un ordre précis pour le bon fonctionnement des services.
+This bash script start a set of programs necessary to execute the game online.
+It makes sure that dependencies are installed before starting each element in a precise order. 
 
-Pour lancer le script a la racine du dépot voici les commandes : 
+To start the script, execute these commands at the root of the directory : 
 ```
 chmod +x linux_start.sh
 ./linux_start.sh
 ```
 
-1. Installation des dépendances 
-    - Avant de démarrer les services, le script vérifie que les dossier `node_modules` existent dans `web_game_displayer` et `railroad`
-    - Si ces dossier sont absents, on exécute la commande `npm install` pour installer les dépendances nécessaires
-2. Lancement du server de jeu - Web Game Displayer
-    - Le script démarre `nodemon` dans `web_game_displayer` afin d'ouvrir le server de jeu.
-    - les logs sont enregistrés dans `nodemon.log`
-3. Récupération de l'ip du server
-    - Après quelques secondes, le script extrait l'ip du server depuis le fichier log.
-    - Si l'ip ne peut pas être récupérée le script s'arrête
-4. Lancement du Reflector
-    - Une fois l'ip obtenue, `reflector` est lancé dans `reflector-linux-x64` avec cette adresse.
-    - Ses logs sont enregistrés dans `reflector.log`
-5. Récupération du port WebSocket du Reflector
-    - Après quelques secondes, le script extrait le port WebSocket utilisé par `reflector` depuis ses logs
-    - SI le port ne peut pas être récupéré, le script s'arrête
-6. Lancement du client save
-    - Lancement d'un client permettant de sauvegarder la partie 
-7. Lancement de l'arbitre - Railroad
-    - `referee.js` est exécuté vie Node.js avec l'option `--watch` pour recharger le programme en cas de modification.
-    - Ler logs sont enregistrés dans `railroad.log`
-8. Lancement du spéctateur - spectate
-    - nodemon lance le spectateur
-    - Le spectateur ne peut pas jouer mais affiche les plateau de tous le joueur, et les met a jour en direct.
-9. Pause de 60 secondes
-    - Cette pause est nécessaire pour plusieurs raison, on s'assure que tous les services précédents sont bien démarrés, et on permet au joueur une minutes pour se connecté au client web.
-10. Lancement de GameMaster
-    - `GameMaster.hs` est exécuté avec l'ip et le port récupérés précédemment
+1. Dependence installation
+    - Before starting services, the script check for `node_modules` files 
+    - If those files does not exist, it runs `npm install` command
+2. Game server start - Web Game Displayer
+    - The script start `nodemon` in `web_game_displayer` to open the game server
+    - Logs are saved in `nodemon.log`
+3. Get server IP address
+    - After a few seconds the script gets the server IP address from log file
+    - If it does not succeed, the script stops
+4. Start of Reflector
+    - Once the script got the IP address, `reflector` starts in `reflector-linux-x64` with this IP address
+    - Logs are saved in `reflector.log`
+5. Get port of Reflector websocket
+    -  After a few seconds the script gets the server websocket port used by `reflector` from logs
+    - If it does not succeed, the script stops
+6. Client save start
+    - Start of a client that will save the game
+7. Start referee - Railroad
+    - `referee.js` is executed via Node.Js with `--watch` option.
+    - Logs are saved in `railroad.log`
+8. Start spectator - spectate
+    - nodemon starts spectate
+    - Spectator can not play but displays all board and update them live
+9. 60 seconds break
+    - This break is used to allow player to connect before starting GameMaster
+10. Start GameMaster
+    - `GameMaster.hs` is executed
 
-## Regarder une partie
+You can access the page at the following address :
+```
+IPAddress:9000/
+```
+Where IPAddress, is the IP address of your machine.
 
-Pour regarder une partie déjà joué on peu lancer le script avec la commande suivante : 
+## Watch a game
+
+In order to watch a game that has already been played, you can start the script with the following command :
 ```
 ./linux_start.sh --replay <file>
 ```
 
-Ou file est un fichier log contenant les message du reflecteur 
+Where file is a log file containing reflector messages.
 
-Voici ce que fait le script avec cette option : 
-1. Installation des dépendances 
-    - Avant de démarrer les services, le script vérifie que les dossier `node_modules` existent dans `web_game_displayer` et `railroad`
-    - Si ces dossier sont absents, on exécute la commande `npm install` pour installer les dépendances nécessaires
-2. Lancement du Reflector
-    - Récupération de l'ip avec la commande `hostname -I`
-    - Une fois l'ip obtenue, `reflector` est lancé dans `reflector-linux-x64` avec cette adresse.
-    - Ses logs sont enregistrés dans `reflector.log`
-3. Lancement du client replay
-    - Lancement d'un client permettant de rejouer une partie 
-    - récupération du fichier mis dans l'option
-4. Lancement du spéctateur - spectate
-    - nodemon lance le spectateur
-    - Le spectateur ne peut pas jouer mais affiche les plateau de tous le joueur, et les met a jour en direct.
+Here is what the script does when this option is activated : 
+1. Dependence installation
+    - Before starting services, the script check for `node_modules` files 
+    - If those files does not exist, it runs `npm install` command
+2. Start of Reflector
+    - Get IP address with `hostname -I` command
+    - Once the script got the IP address, `reflector` starts in `reflector-linux-x64` with this IP address
+    - Logs are saved in `reflector.log`
+3. Start replay client
+    - Start a client that allows a game to be replayed
+    - Get file passed in option
+4. Start spectator - spectate
+    - nodemon starts spectate
+    - Spectator can not play but displays all board and update them live
+
+You can access the page at the following address :
+```
+IPAddress:9090/src/index.html
+```
+Where IPAddress, is the IP address of your machine.
