@@ -6,6 +6,7 @@ REFLECTOR_DIR=$(ls | grep "reflector")
 REFLECTOR_PATH="$SCRIPT_DIR/$REFLECTOR_DIR"
 RAILROAD_PATH="$SCRIPT_DIR/railroad"
 GAMEMASTER_PATH="$SCRIPT_DIR/gamemaster"
+SPECTATOR_PATH="$SCRIPT_DIR/spectate"
 
 check_and_install_npm() {
     local dir="$1"
@@ -19,6 +20,7 @@ check_and_install_npm() {
 
 check_and_install_npm "$WEB_GAME_PATH"
 check_and_install_npm "$RAILROAD_PATH"
+check_and_install_npm "$SPECTATOR_PATH"
 
 cd "$WEB_GAME_PATH" || exit
 echo "Lancement de nodemon..."
@@ -59,6 +61,13 @@ ARBITRE_PID=$!
 
 sleep 3
 
+cd "$SPECTATOR_PATH" || exit
+echo "Lancement du spectateur..."
+nodemon | tee spectator.log &
+SPECTATOR_PID=$!
+
+sleep 3
+
 echo "Attente de 60 secondes avant de lancer GameMaster..."
 sleep 60
 
@@ -67,4 +76,4 @@ echo "Lancement de GameMaster avec l'adresse IP : $IP et le port : $PORT..."
 runghc GameMaster.hs "$IP" "$PORT" &
 GAMEMASTER_PID=$!
 
-wait $NPM_PID $REFLECTOR_PID $ARBITRE_PID $GAMEMASTER_PID
+wait $NPM_PID $REFLECTOR_PID $ARBITRE_PID $SPECTATOR_PID $GAMEMASTER_PID
