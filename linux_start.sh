@@ -7,6 +7,7 @@ REFLECTOR_PATH="$SCRIPT_DIR/$REFLECTOR_DIR"
 RAILROAD_PATH="$SCRIPT_DIR/railroad"
 GAMEMASTER_PATH="$SCRIPT_DIR/gamemaster"
 SPECTATOR_PATH="$SCRIPT_DIR/spectate"
+SAVE_REPLAY_PATH="$SCRIPT_DIR/save_replay_client"
 
 check_and_install_npm() {
     local dir="$1"
@@ -54,6 +55,11 @@ fi
 
 echo "Port récupéré : $PORT"
 
+cd "$SAVE_REPLAY_PATH" || exit
+echo "Exécution de save.py avec l'adresse IP : $IP et le port : $PORT..."
+python3 save.py "$IP" "$PORT" &
+SAVE_REPLAY_PID=$!
+
 cd "$RAILROAD_PATH" || exit
 echo "Lancement de l'arbitre..."
 node --watch referee.js | tee railroad.log &
@@ -76,4 +82,4 @@ echo "Lancement de GameMaster avec l'adresse IP : $IP et le port : $PORT..."
 runghc GameMaster.hs "$IP" "$PORT" &
 GAMEMASTER_PID=$!
 
-wait $NPM_PID $REFLECTOR_PID $ARBITRE_PID $SPECTATOR_PID $GAMEMASTER_PID
+wait $NPM_PID $REFLECTOR_PID $SAVE_REPLAY_PID $ARBITRE_PID $SPECTATOR_PID $GAMEMASTER_PID
