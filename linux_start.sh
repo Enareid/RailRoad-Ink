@@ -1,6 +1,9 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WEB_GAME_PATH="$SCRIPT_DIR/web_game_displayer"
-REFLECTOR_PATH="$SCRIPT_DIR/reflector-linux-x64"
+
+REFLECTOR_DIR=$(ls | grep "reflector")
+
+REFLECTOR_PATH="$SCRIPT_DIR/$REFLECTOR_DIR"
 RAILROAD_PATH="$SCRIPT_DIR/railroad"
 GAMEMASTER_PATH="$SCRIPT_DIR/gamemaster"
 
