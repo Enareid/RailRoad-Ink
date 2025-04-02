@@ -21,10 +21,10 @@ check_and_clone_repo() {
 }
 
 # Vérification et clonage des dépôts si nécessaire
-check_and_clone_repo "$SPECTATOR_PATH" "git@gitlab-etu.fil.univ-lille.fr:projet_s6_2025_g4/spectate.git"
-check_and_clone_repo "$WEB_GAME_PATH" "git@gitlab-etu.fil.univ-lille.fr:projet_s6_2025_g4/web_game_displayer.git"
-check_and_clone_repo "$GAMEMASTER_PATH" "git@gitlab-etu.fil.univ-lille.fr:projet_s6_2025_g4/gamemaster.git"
-check_and_clone_repo "$SAVE_REPLAY_PATH" "git@gitlab-etu.fil.univ-lille.fr:projet_s6_2025_g4/save_replay_client.git"
-check_and_clone_repo "$RAILROAD_PATH" "git@gitlab-etu.fil.univ-lille.fr:projet_s6_2025_g4/railroad.git"
+check_and_clone_repo "$SPECTATOR_PATH" "git@github.com:Enareid/spectate.git"
+check_and_clone_repo "$WEB_GAME_PATH" "git@github.com:Enareid/Web_Game_Displayer.git"
+check_and_clone_repo "$GAMEMASTER_PATH" "git@github.com:Enareid/GameMaster.git"
+check_and_clone_repo "$SAVE_REPLAY_PATH" "git@github.com:Enareid/save_replay_client.git"
+check_and_clone_repo "$RAILROAD_PATH" "git@github.com:Enareid/railroad_logical.git"
 
 echo "Tous les dépôts sont clonés avec succès."
