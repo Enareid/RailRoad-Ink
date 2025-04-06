@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./clone_depot.sh
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WEB_GAME_PATH="$SCRIPT_DIR/web_game_displayer"
 
